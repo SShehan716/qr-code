@@ -14,6 +14,10 @@
 
 [✨ Live Demo](#-quick-start) • [🚀 Features](#-key-features) • [🛡️ Why Direct QR?](#-why-direct-qr) • [📦 Quick Start](#-quick-start) • [🤝 Contributing](#-contributing)
 
+<br /><br />
+
+<img src="assets/preview.png" alt="Direct QR Code Generator Preview" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);" />
+
 </div>
 
 <hr />
@@ -143,8 +147,7 @@ Contributions, issues, and feature requests are welcome!
 <hr />
 
 ## 📄 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License** &copy; 2026 Sachin Shehan. See [LICENSE](LICENSE) for the full license text.
 
 <div align="center">
 
