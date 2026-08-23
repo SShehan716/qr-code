@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct QR Code Generator - Zero Redirects, 100% Client-Side</title>
+    <meta name="description" content="Generate high-resolution QR codes that encode links directly into the code without third-party redirects, tracking URLs, or external servers.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="badge-direct">
+                <span class="dot"></span> Direct Link &bull; 0 Middleware &bull; Pure Client-Side
+            </div>
+            <h1 class="app-title">Direct QR Code Generator</h1>
+            <p class="app-subtitle">Generate scannable QR codes that point directly to your target URL or data without intermediate redirection servers or tracking.</p>
+        </header>
+
+        <!-- Main Generator Layout -->
+        <main class="generator-grid">
+            <!-- Left Side: Controls & Input -->
+            <section class="generator-controls glass-card" aria-label="QR Code Configuration">
+                
+                <!-- Content Type Tabs -->
+                <div class="type-tabs" role="tablist">
+                    <button class="type-tab active" data-type="url" role="tab" id="tab-url">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        Direct URL
+                    </button>
+                    <button class="type-tab" data-type="text" role="tab" id="tab-text">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="17" y1="18" x2="3" y2="18"></line></svg>
+                        Plain Text
+                    </button>
+                    <button class="type-tab" data-type="wifi" role="tab" id="tab-wifi">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                        Wi-Fi
+                    </button>
+                    <button class="type-tab" data-type="email" role="tab" id="tab-email">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        Email
+                    </button>
+                    <button class="type-tab" data-type="phone" role="tab" id="tab-phone">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        Phone / SMS
+                    </button>
+                </div>
+
+                <!-- Dynamic Form Inputs -->
+                <div id="formContainer" class="form-section">
+                    
+                    <!-- URL Panel -->
+                    <div id="panel-url" class="type-panel active">
+                        <div class="section-label">
+                            <span>Direct Destination URL</span>
+                            <span style="font-size: 0.75rem; color: var(--accent);">Direct Scan Target</span>
+                        </div>
+                        <div class="input-with-icon">
+                            <span class="input-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            </span>
+                            <input type="url" id="inputUrl" class="input-field" placeholder="https://example.com/your-target-page" value="https://google.com" autocomplete="off" spellcheck="false">
+                        </div>
+                    </div>
+
+                    <!-- Text Panel -->
+                    <div id="panel-text" class="type-panel" style="display: none;">
+                        <div class="section-label">Plain Text Content</div>
+                        <textarea id="inputText" class="textarea-field" placeholder="Enter any text, notes, or instructions to encode..."></textarea>
+                    </div>
+
+                    <!-- Wi-Fi Panel -->
+                    <div id="panel-wifi" class="type-panel" style="display: none;">
+                        <div class="section-label">Wi-Fi Connection Details</div>
+                        <div class="input-grid-2">
+                            <div>
+                                <input type="text" id="wifiSsid" class="input-field" placeholder="Network Name (SSID)">
+                            </div>
+                            <div>
+                                <select id="wifiAuth" class="select-field">
+                                    <option value="WPA">WPA / WPA2 / WPA3</option>
+                                    <option value="WEP">WEP</option>
+                                    <option value="nopass">Open (No Password)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="password" id="wifiPassword" class="input-field" placeholder="Network Password">
+                        </div>
+                    </div>
+
+                    <!-- Email Panel -->
+                    <div id="panel-email" class="type-panel" style="display: none;">
+                        <div class="section-label">Direct Email Action</div>
+                        <input type="email" id="emailTo" class="input-field" placeholder="recipient@domain.com" style="margin-bottom: 0.75rem;">
+                        <input type="text" id="emailSubject" class="input-field" placeholder="Subject" style="margin-bottom: 0.75rem;">
+                        <textarea id="emailBody" class="textarea-field" placeholder="Message content..."></textarea>
+                    </div>
+
+                    <!-- Phone Panel -->
+                    <div id="panel-phone" class="type-panel" style="display: none;">
+                        <div class="section-label">Phone Call or SMS</div>
+                        <div class="input-grid-2">
+                            <div>
+                                <select id="phoneType" class="select-field">
+                                    <option value="tel">Direct Phone Call (tel:)</option>
+                                    <option value="smsto">SMS Text Message (smsto:)</option>
+                                    <option value="wa">WhatsApp Direct</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type="tel" id="phoneNumber" class="input-field" placeholder="+1 234 567 8900">
+                            </div>
+                        </div>
+                        <div id="smsBodyGroup" style="display: none;">
+                            <textarea id="smsBody" class="textarea-field" placeholder="SMS / WhatsApp pre-filled message..."></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Customization Options -->
+                <div class="form-section">
+                    <div class="section-label">Customization & Styling</div>
+                    
+                    <div class="options-grid">
+                        
+                        <!-- Colors Box -->
+                        <div class="option-box">
+                            <div class="option-box-title">
+                                <span>Colors</span>
+                                <span id="contrastIndicator" class="contrast-badge contrast-good">Good Contrast</span>
+                            </div>
+                            
+                            <!-- Foreground Color -->
+                            <div class="color-picker-row">
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="fgColor" value="#0f172a">
+                                </div>
+                                <input type="text" id="fgColorText" class="color-hex" value="#0F172A" maxlength="7">
+                            </div>
+                            
+                            <!-- Quick Foreground Swatches -->
+                            <div class="preset-swatches" id="fgSwatches">
+                                <button class="swatch-btn" style="background:#000000;" data-color="#000000" title="Pure Black"></button>
+                                <button class="swatch-btn" style="background:#0f172a;" data-color="#0f172a" title="Midnight Navy"></button>
+                                <button class="swatch-btn" style="background:#4338ca;" data-color="#4338ca" title="Indigo Deep"></button>
+                                <button class="swatch-btn" style="background:#047857;" data-color="#047857" title="Emerald"></button>
+                                <button class="swatch-btn" style="background:#b91c1c;" data-color="#b91c1c" title="Ruby Red"></button>
+                                <button class="swatch-btn" style="background:#0369a1;" data-color="#0369a1" title="Deep Cyan"></button>
+                            </div>
+
+                            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0.85rem 0;">
+
+                            <!-- Background Color -->
+                            <div class="color-picker-row">
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="bgColor" value="#ffffff">
+                                </div>
+                                <input type="text" id="bgColorText" class="color-hex" value="#FFFFFF" maxlength="7">
+                            </div>
+
+                            <!-- Quick Background Swatches -->
+                            <div class="preset-swatches" id="bgSwatches">
+                                <button class="swatch-btn" style="background:#ffffff;" data-color="#ffffff" title="Pure White"></button>
+                                <button class="swatch-btn" style="background:#f8fafc;" data-color="#f8fafc" title="Slate 50"></button>
+                                <button class="swatch-btn" style="background:#fef3c7;" data-color="#fef3c7" title="Warm Vanilla"></button>
+                                <button class="swatch-btn" style="background:#e0e7ff;" data-color="#e0e7ff" title="Soft Lavender"></button>
+                            </div>
+                        </div>
+
+                        <!-- Pattern & Corner Style Box -->
+                        <div class="option-box">
+                            <div class="option-box-title">Dot & Corner Style</div>
+                            
+                            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Module Shape</label>
+                            <div class="segmented-group" id="dotStyleGroup" style="margin-bottom: 0.85rem;">
+                                <button type="button" class="segment-btn active" data-style="square">Square</button>
+                                <button type="button" class="segment-btn" data-style="rounded">Rounded</button>
+                                <button type="button" class="segment-btn" data-style="dots">Dots</button>
+                            </div>
+
+                            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Corner Eye Shape</label>
+                            <div class="segmented-group" id="cornerStyleGroup" style="margin-bottom: 0.85rem;">
+                                <button type="button" class="segment-btn active" data-style="square">Sharp</button>
+                                <button type="button" class="segment-btn" data-style="rounded">Smooth</button>
+                                <button type="button" class="segment-btn" data-style="extra-rounded">Circle</button>
+                            </div>
+
+                            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Error Correction Level</label>
+                            <select id="eccLevel" class="select-field" style="padding: 0.5rem 0.75rem; font-size: 0.825rem;">
+                                <option value="1">L - Low (~7% recovery)</option>
+                                <option value="0">M - Medium (~15% recovery)</option>
+                                <option value="3">Q - Quartile (~25% recovery)</option>
+                                <option value="2" selected>H - High (~30% recovery / Best for logos)</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- Center Logo / Icon Selection -->
+                    <div class="option-box" style="margin-top: 1.25rem;">
+                        <div class="option-box-title">
+                            <span>Center Badge / Logo (Optional)</span>
+                            <span style="font-size: 0.7rem; color: var(--text-muted);">High ECC auto-applied</span>
+                        </div>
+                        
+                        <div class="logo-bar">
+                            <button type="button" class="logo-btn active" data-logo="none" title="No Logo">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                            <button type="button" class="logo-btn" data-logo="link" title="Link Icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                            </button>
+                            <button type="button" class="logo-btn" data-logo="globe" title="Globe / Web Icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            </button>
+                            <button type="button" class="logo-btn" data-logo="wifi" title="WiFi Icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                            </button>
+                            <button type="button" class="logo-btn" data-logo="star" title="Star Icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            </button>
+                            <button type="button" class="logo-btn" data-logo="lock" title="Secure Lock">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </button>
+                            
+                            <label class="file-upload-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                Upload Custom Logo
+                                <input type="file" id="logoFileInput" accept="image/png, image/jpeg, image/svg+xml" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Right Side: Live QR Code Preview & Direct Export Actions -->
+            <aside class="preview-column">
+                <div class="glass-card preview-card" aria-label="QR Code Preview">
+                    
+                    <!-- Canvas Box -->
+                    <div class="qr-canvas-wrapper" id="qrCanvasContainer">
+                        <canvas id="qrCanvas" width="300" height="300"></canvas>
+                    </div>
+
+                    <!-- Direct Payload Inspector Box -->
+                    <div class="direct-info-card">
+                        <div class="direct-info-header">
+                            <span class="direct-info-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                                Raw Encoded Payload
+                            </span>
+                            <span style="font-size: 0.72rem; color: var(--success); font-weight: 600;">100% Direct Target</span>
+                        </div>
+                        <div class="payload-preview" id="payloadDisplay">https://google.com</div>
+                        <div class="payload-meta">
+                            <span id="payloadLength">Length: 18 chars</span>
+                            <span id="matrixVersion">Matrix: Auto</span>
+                        </div>
+                    </div>
+
+                    <!-- Export Actions Grid -->
+                    <div class="action-buttons-grid">
+                        <button id="btnDownloadPng" class="btn btn-primary" title="Download High Resolution PNG">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Download PNG
+                        </button>
+
+                        <button id="btnDownloadSvg" class="btn btn-secondary" title="Download Vector SVG">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            Download SVG
+                        </button>
+
+                        <button id="btnCopyClipboard" class="btn btn-secondary" title="Copy QR Code image to clipboard">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy Image
+                        </button>
+
+                        <button id="btnTestDirectUrl" class="btn btn-test" title="Verify link opens directly without middle hops">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            Test Direct Link
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+        </main>
+
+        <!-- Toast Notifications Hub -->
+        <div id="toastContainer" class="toast-container"></div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Direct QR Generator &bull; Runs completely in your browser &bull; No telemetry, no redirect hops, no tracking.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="qrcode.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
